@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Auth} from '../../services/auth';
 import {CharacterService} from '../../services/characterService';
 import {Character} from '../../models/character';
@@ -20,6 +20,10 @@ export class Accueil {
   public errorMessage: string = '';
 
   constructor(private auth: Auth, private characterService: CharacterService) {
+  }
+
+  ngOnInit(): void {
+    console.log('ngOnInit appelé');
     this.username = this.auth.getUsername();
     this.loadCharacters();
   }
