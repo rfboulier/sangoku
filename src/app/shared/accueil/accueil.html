@@ -6,3 +6,28 @@
   <h2>Pensez à vous connecter.</h2>
 }
 
+<h1>Personnages Dragon Ball</h1>
+
+@if (isLoading) {
+  <p>Chargement en cours...</p>
+}
+
+@if (!isLoading && errorMessage) {
+  <p>{{ errorMessage }}</p>
+}
+
+@if (isLogged()){
+  <label for="searchCharacter"></label>
+  <input type="text" id="searchCharacter" name="searchCharacter">
+}
+
+
+@if (!isLoading && !errorMessage) {
+  @for (character of characters; track character.id) {
+    <article>
+      <img [src]="character.image" [alt]="character.name">
+      <h2>{{ character.name }}</h2>
+      <p>{{ character.race }}</p>
+    </article>
+  }
+}
