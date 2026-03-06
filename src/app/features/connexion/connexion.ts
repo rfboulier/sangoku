@@ -21,7 +21,10 @@ constructor(private router: Router, private authService: Auth) {
 
 public saveUsername() {
   this.authService.saveUsername(this.username)
-  console.log(this.username);
+  console.log('=== Après saveUsername ===');
+  console.log('isLogged:', this.authService.isLogged());
+  console.log('username:', this.authService.getUsername());
+  this.router.navigate(['/']);
 }
 
   public isLoggedIn(): boolean {

@@ -1,7 +1,7 @@
 <h1>Connexion</h1>
 
 @if (!isLoggedIn()) {
-  <form (submit)="saveUsername()">
+  <form (ngSubmit)="saveUsername()">
     <label for="username">Username :</label>
     <input type="text" id="username" name="username" [(ngModel)]="username">
     <label for="password">Password :</label>

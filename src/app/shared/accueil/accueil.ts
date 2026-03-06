@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {Auth} from '../../services/auth';
 import {CharacterService} from '../../services/characterService';
 import {Character} from '../../models/character';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-accueil',
+  standalone: true,
   imports: [],
   templateUrl: './accueil.html',
   styleUrl: './accueil.css',
 })
 
-export class Accueil {
+export class Accueil implements OnInit {
   // Concerne l'utilisateur
   public username: string = '';
 
@@ -18,36 +20,39 @@ export class Accueil {
   public characters: Character[] = [];
   public isLoading = true;
   public errorMessage: string = '';
+  private routerSub: Subscription = new Subscription();
 
-  constructor(private auth: Auth, private characterService: CharacterService) {
+
+  constructor(public auth: Auth, private characterService: CharacterService,     private cdr: ChangeDetectorRef) {
   }
 
-  ngOnInit(): void {
-    console.log('ngOnInit appelé');
+  ngOnInit() {
+    this.loadCharacters();
+    this.username = this.auth.getUsername();
+  }
+
+  private loadData(): void {
     this.username = this.auth.getUsername();
     this.loadCharacters();
+  }
+
+  private loadCharacters(): void {
+    this.isLoading = true;
+    this.characterService.getAllCharacters().subscribe({
+      next: (data) => {
+        this.characters = data;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du chargement des personnages';
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   public isLogged(): boolean {
     return this.auth.getUsername().trim().length > 0;
   }
-
-  private loadCharacters(): void {
-    this.characterService.getAllCharacters().subscribe({
-      next: (data) => {
-        console.log('Données reçues :', data);
-        this.characters = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Erreur API :', err);
-        this.errorMessage = 'Erreur lors du chargement des personnages';
-        this.isLoading = false;
-      },
-      complete: () => {
-        console.log('Requête terminée');
-      }
-    })
-  }
-
 }
