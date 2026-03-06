@@ -1,0 +1,8 @@
+@if (isLogged()) {
+  <h1>Bonjour {{ username }} !</h1>
+}
+@if (!isLogged()) {
+  <h1>Bonjour et bienvenue.</h1>
+  <h2>Pensez à vous connecter.</h2>
+}
+
