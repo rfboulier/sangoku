@@ -6,7 +6,7 @@ import {Accueil} from './shared/accueil/accueil';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Connexion, Navbar, Accueil],
+  imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
